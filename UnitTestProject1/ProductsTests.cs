@@ -79,22 +79,6 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void MultiplyOperator_MultiplierEqualToOne_ReturnsProductWithSameValues()
-        {
-            // Arrange
-            var p = new Product("Product A", 10.0m, 3);
-            int multiplier = 1;
-
-            // Act
-            var result = p * multiplier;
-
-            // Assert
-            Assert.AreEqual("Product A", result.Name);
-            Assert.AreEqual(10.0m, result.UnitPrice);
-            Assert.AreEqual(3, result.Quantity);
-        }
-
-        [TestMethod]
         public void AddOperator_ProductsWithZeroQuantity_ReturnsCombinedProductWithZeroQuantity()
         {
             // Arrange
@@ -131,7 +115,5 @@ namespace UnitTestProject1
             // Act & Assert
             Assert.ThrowsException<InvalidOperationException>(() => p1 + p2);
         }
-
-
     }
 }

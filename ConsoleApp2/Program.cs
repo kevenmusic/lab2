@@ -24,8 +24,18 @@ namespace ConsoleApp3
                 Console.Write("Цена за единицу: ");
                 decimal unitPrice = Convert.ToDecimal(Console.ReadLine());
 
+                if (unitPrice <= 0)
+                {
+                    throw new ArgumentException("Общая стоимость не может быть отрицательной.");
+                }
+
                 Console.Write("Количество: ");
                 int quantity = Convert.ToInt32(Console.ReadLine());
+
+                if (quantity <= 0)
+                {
+                    throw new ArgumentException("Количество не может быть отрицательным значением.");
+                }
 
                 products[i] = new Product(name, unitPrice, quantity);
             }
