@@ -12,9 +12,14 @@ namespace ConsoleApp3
             Console.Write("Введите количество изделий: ");
             int count = Convert.ToInt32(Console.ReadLine());
 
+            if (count != 2)
+            {
+                throw new ArgumentException("Неверное количество изделий. Должно быть 2.");
+            }
+
             Product[] products = new Product[count];
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Console.WriteLine($"Введите данные для изделия {i + 1}:");
 
@@ -24,7 +29,7 @@ namespace ConsoleApp3
                 Console.Write("Цена за единицу: ");
                 decimal unitPrice = Convert.ToDecimal(Console.ReadLine());
 
-                if (unitPrice <= 0)
+                if (unitPrice < 0)
                 {
                     throw new ArgumentException("Общая стоимость не может быть отрицательной.");
                 }
@@ -32,7 +37,7 @@ namespace ConsoleApp3
                 Console.Write("Количество: ");
                 int quantity = Convert.ToInt32(Console.ReadLine());
 
-                if (quantity <= 0)
+                if (quantity < 0)
                 {
                     throw new ArgumentException("Количество не может быть отрицательным значением.");
                 }
