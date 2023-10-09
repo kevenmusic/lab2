@@ -12,18 +12,18 @@ namespace ConsoleApp3
             Console.Write("Введите количество изделий: ");
             int count = Convert.ToInt32(Console.ReadLine());
 
-            if (count != 2)
+            if (count > 2)
             {
-                throw new ArgumentException("Неверное количество изделий. Должно быть 2.");
+                throw new ArgumentException("Неверное количество изделий.Должно быть до двух");
             }
 
             Product[] products = new Product[count];
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < count; i++)
             {
                 Console.WriteLine($"Введите данные для изделия {i + 1}:");
 
-                Console.Write("Название: ");
+                Console.Write("Название: ");    
                 string name = Console.ReadLine();
 
                 Console.Write("Цена за единицу: ");
@@ -31,7 +31,9 @@ namespace ConsoleApp3
 
                 if (unitPrice < 0)
                 {
-                    throw new ArgumentException("Общая стоимость не может быть отрицательной.");
+                    Console.WriteLine("Цена за единицу не может быть отрицательной.");
+                    Console.Write("Цена за единицу: ");
+                    unitPrice = Convert.ToDecimal(Console.ReadLine());
                 }
 
                 Console.Write("Количество: ");
@@ -39,7 +41,9 @@ namespace ConsoleApp3
 
                 if (quantity < 0)
                 {
-                    throw new ArgumentException("Количество не может быть отрицательным значением.");
+                    Console.WriteLine("Количество не может быть отрицательным значением.");
+                    Console.Write("Цена за единицу: ");
+                    unitPrice = Convert.ToDecimal(Console.ReadLine());
                 }
 
                 products[i] = new Product(name, unitPrice, quantity);
@@ -59,24 +63,31 @@ namespace ConsoleApp3
                 switch (operation)
                 {
                     case 1:
-                        try
+                        if (count == 2)
                         {
-                            Product sumProduct = SumProducts(products);
-                            Console.WriteLine($"Результат сложения:");
-                            Console.WriteLine($"Имя: {sumProduct.Name}");
-                            Console.WriteLine($"Стоимость единицы изделия: {sumProduct.UnitPrice}");
-                            Console.WriteLine($"Количество произведенных единиц изделия: {sumProduct.Quantity}");
+                            try
+                            {
+                                Product sumProduct = SumProducts(products);
+                                Console.WriteLine($"Результат сложения:");
+                                Console.WriteLine($"Имя: {sumProduct.Name}");
+                                Console.WriteLine($"Стоимость единицы изделия: {sumProduct.UnitPrice}");
+                                Console.WriteLine($"Количество произведенных единиц изделия: {sumProduct.Quantity}");
+                            }
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine($"Ошибка: {ex.Message}");
+                            }
                         }
-                        catch (ArgumentException ex)
+                        else
                         {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
+                            throw new ArgumentException("Складывать можно только два изделия.");
                         }
+
                         break;
 
                     case 2:
                         Console.Write("Введите множитель: ");
                         int multiplier = Convert.ToInt32(Console.ReadLine());
-
                         MultiplyProducts(products, multiplier);
                         break;
 

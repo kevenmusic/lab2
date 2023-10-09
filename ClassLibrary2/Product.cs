@@ -47,7 +47,7 @@ namespace ClassLibrary3
                 throw new ArgumentException("Невозможно добавить товары с разными названиями.");
             }
 
-            // Проверяем, если количество единиц отрицательное, выбрасываем исключение
+            // Проверяем, если количество отрицательное, выбрасываем исключение
             if (p1.Quantity < 0 || p2.Quantity < 0)
             {
                 throw new InvalidOperationException("Количество единиц не может быть отрицательным.");
@@ -62,11 +62,11 @@ namespace ClassLibrary3
                 throw new ArgumentException("Общая стоимость не может быть отрицательной.");
             }
 
-            // Вычисляем общее количество единиц
+            // Вычисляем общее количество
             int totalQuantity = p1.Quantity + p2.Quantity;
 
             decimal unitPrice;
-            // Если общее количество единиц равно нулю, устанавливаем цену за единицу в ноль
+            // Если общее количество равно нулю, устанавливаем цену за единицу в ноль
             if (totalQuantity == 0)
             {
                 unitPrice = 0;
@@ -89,37 +89,41 @@ namespace ClassLibrary3
         /// <returns>Новый объект Product, являющийся результатом умножения объекта на множитель.</returns>
         public static Product operator *(Product p, int multiplier)
         {
-            if (multiplier == 0)
+            int totalQuantity;
+            decimal unitPrice;
+
+            if (multiplier == 0 || p.Quantity == 0)
             {
-                return new Product(p.Name, 0, 0);
+                totalQuantity = 0;
+                unitPrice = 0;
             }
             else if (multiplier > 0)
             {
                 decimal totalPrice = p.UnitPrice * p.Quantity * multiplier;
-                int totalQuantity = p.Quantity * multiplier;
+                totalQuantity = p.Quantity * multiplier;
 
-                // Проверяем, если общее количество единиц отрицательное, выбрасываем исключение
+                // Проверяем, если общее количество отрицательное, выбрасываем исключение
                 if (totalQuantity < 0)
                 {
                     throw new InvalidOperationException("Общее количество не может быть отрицательным.");
                 }
 
-                decimal unitPrice = totalPrice / totalQuantity;
-                return new Product(p.Name, unitPrice, totalQuantity);
+                // Вычисляем цену за единицу
+                unitPrice = totalPrice / totalQuantity;
             }
             else
             {
-                decimal unitPrice = p.UnitPrice;
-                int totalQuantity = p.Quantity * multiplier;
+                unitPrice = p.UnitPrice;
+                totalQuantity = p.Quantity * multiplier;
 
-                // Проверяем, если общее количество единиц отрицательное, выбрасываем исключение
+                // Проверяем, если количество единиц отрицательное, выбрасываем исключение
                 if (totalQuantity < 0)
                 {
                     throw new InvalidOperationException("Общее количество не может быть отрицательным.");
                 }
-
-                return new Product(p.Name, unitPrice, totalQuantity);
             }
+
+            return new Product(p.Name, unitPrice, totalQuantity);
         }
     }
 }

@@ -146,5 +146,20 @@ namespace UnitTestProject1
             Assert.AreEqual(0, result.Quantity);
             Assert.AreEqual(0, result.UnitPrice);
         }
+        [TestMethod]
+        public void Multiplication_WithPositiveMultiplierAndZeroQuantity_ReturnsNewProductWithZeroUnitPrice()
+        {
+            // Arrange
+            var p = new Product("Product 1", 15, 0);
+            int multiplier = 2;
+
+            // Act
+            var result = p * multiplier;
+
+            // Assert
+            Assert.AreEqual("Product 1", result.Name);
+            Assert.AreEqual(0, result.Quantity);
+            Assert.AreEqual(0, result.UnitPrice);
+        }
     }
 }
