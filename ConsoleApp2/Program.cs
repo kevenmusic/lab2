@@ -10,92 +10,149 @@ namespace ConsoleApp3
             bool exit = false;
 
             Console.Write("Введите количество изделий: ");
+            
             int count = Convert.ToInt32(Console.ReadLine());
-
-            if (count > 2)
+            
+            while (count > 2)
             {
-                throw new ArgumentException("Неверное количество изделий.Должно быть до двух");
+                Console.Clear();
+
+                Console.WriteLine("Неверное количество изделий. Должно быть до двух");
+
+                Console.Write("Введите количество изделий: ");
+                count = Convert.ToInt32(Console.ReadLine());
             }
 
             Product[] products = new Product[count];
 
-            for (int i = 0; i < count; i++)
-            {
-                Console.WriteLine($"Введите данные для изделия {i + 1}:");
-
-                Console.Write("Название: ");    
-                string name = Console.ReadLine();
-
-                Console.Write("Цена за единицу: ");
-                decimal unitPrice = Convert.ToDecimal(Console.ReadLine());
-
-                if (unitPrice < 0)
-                {
-                    Console.WriteLine("Цена за единицу не может быть отрицательной.");
-                    Console.Write("Цена за единицу: ");
-                    unitPrice = Convert.ToDecimal(Console.ReadLine());
-                }
-
-                Console.Write("Количество: ");
-                int quantity = Convert.ToInt32(Console.ReadLine());
-
-                if (quantity < 0)
-                {
-                    Console.WriteLine("Количество не может быть отрицательным значением.");
-                    Console.Write("Цена за единицу: ");
-                    unitPrice = Convert.ToDecimal(Console.ReadLine());
-                }
-
-                products[i] = new Product(name, unitPrice, quantity);
-            }
-
             while (!exit)
             {
-                Console.WriteLine("Выберите операцию:");
-                Console.WriteLine("1. Поиск суммы");
-                Console.WriteLine("2. Произведение на число");
-                Console.WriteLine("3. Вывести данные об изделиях");
-                Console.WriteLine("4. Выход");
-                Console.WriteLine("------------------------");
+                Console.Clear();
+
+                Console.WriteLine("|--------------------------------------|");
+                Console.WriteLine("|           Выберите операцию:         |");
+                Console.WriteLine("|            1. Поиск суммы            |");
+                Console.WriteLine("|       2. Произведение на число       |");
+                Console.WriteLine("|           3. Вывод данных            |");
+                Console.WriteLine("|            4. Ввод данных            |");
+                Console.WriteLine("|               5. Выход               |");
+                Console.WriteLine("|--------------------------------------|");
                 Console.Write("Введите номер операции: ");
-                int operation = Convert.ToInt32(Console.ReadLine());
+                int operation;
+
+                try
+                {
+                    operation = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine($"Ошибка: {ex.Message}");
+                    Console.WriteLine("Нажмите Enter для продолжения...");
+                    Console.ReadLine();
+                    continue;
+                }
 
                 switch (operation)
                 {
                     case 1:
-                        if (count == 2)
-                        {
-                            try
-                            {
-                                Product sumProduct = SumProducts(products);
-                                Console.WriteLine($"Результат сложения:");
-                                Console.WriteLine($"Имя: {sumProduct.Name}");
-                                Console.WriteLine($"Стоимость единицы изделия: {sumProduct.UnitPrice}");
-                                Console.WriteLine($"Количество произведенных единиц изделия: {sumProduct.Quantity}");
-                            }
-                            catch (ArgumentException ex)
-                            {
-                                Console.WriteLine($"Ошибка: {ex.Message}");
-                            }
+                        try
+                        {   
+                            Product sumProduct = SumProducts(products);
+                            ShowProductData(products);
+                            Console.WriteLine();
+                            Console.WriteLine("|--------------------------------------------------|");
+                            Console.WriteLine($"| Результат сложения                               |");
+                            Console.WriteLine($"| Имя: {sumProduct.Name, -43} |");
+                            Console.WriteLine($"| Стоимость единицы изделия: {sumProduct.UnitPrice, -21} |");
+                            Console.WriteLine($"| Количество произведенных единиц изделия: {sumProduct.Quantity, -7} |");
+                            Console.WriteLine("|--------------------------------------------------|");
+
                         }
-                        else
+                        catch (ArgumentException ex)
                         {
-                            throw new ArgumentException("Складывать можно только два изделия.");
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+                        catch(NullReferenceException ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
                         }
 
+                        Console.WriteLine("Нажмите Enter для продолжения...");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
 
                     case 2:
-                        Console.Write("Введите множитель: ");
-                        int multiplier = Convert.ToInt32(Console.ReadLine());
-                        MultiplyProducts(products, multiplier);
+                        try
+                        {
+                            Console.Write("Введите множитель: ");
+                            int multiplier = Convert.ToInt32(Console.ReadLine());
+                     
+                            MultiplyProducts(products, multiplier);
+                            Console.WriteLine();
+                            ShowProductData(products);
+
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+                        catch (InvalidOperationException ex)
+                        {   
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+                        catch (NullReferenceException ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+
+                        Console.WriteLine("Нажмите Enter для продолжения...");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
 
                     case 3:
-                        ShowProductData(products);
+                        try
+                        {
+                            ShowProductData(products);
+                        }
+                        catch (NullReferenceException ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
+
+                        Console.WriteLine("Нажмите Enter для продолжения...");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
 
                     case 4:
+                        for (int i = 0; i < count; i++)
+                        {
+                            Console.WriteLine($"Введите данные для изделия {i + 1}:");
+
+                            Console.Write("Название: ");
+                            string name = Console.ReadLine();
+
+                            Console.Write("Цена за единицу: ");
+                            float unitPrice = Convert.ToSingle(Console.ReadLine());
+
+                            Console.Write("Количество: ");
+                            int quantity = Convert.ToInt32(Console.ReadLine());
+                            products[i] = new Product(name, unitPrice, quantity);
+                        }
+
+                        Console.WriteLine("Данные введены успешно.");
+                        Console.WriteLine("Нажмите Enter для продолжения...");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+
+                    case 5:
                         exit = true;
                         break;
 
@@ -113,9 +170,9 @@ namespace ConsoleApp3
 
         static Product SumProducts(Product[] products)
         {
-            if (products.Length == 0)
+            if (products.Length < 2)
             {
-                throw new ArgumentException("Нет изделий для сложения.");
+                ProductExceptions.ThrowInvalidOperationForMoreThanTwoProductsException();
             }
 
             Product sumProduct = products[0];
@@ -132,33 +189,37 @@ namespace ConsoleApp3
         {
             if (products.Length == 0)
             {
-                Console.WriteLine("Нет изделий для умножения.");
-                return;
+                ProductExceptions.ThrowNoProductsForMultiplication();
             }
 
             for (int i = 0; i < products.Length; i++)
             {
                 Product multipliedProduct = products[i] * multiplier;
-                Console.WriteLine(" ");
-                Console.WriteLine($"Результат умножения на число для изделия {i + 1}:");
-                Console.WriteLine($"Имя: {multipliedProduct.Name}");
-                Console.WriteLine($"Стоимость единицы изделия: {multipliedProduct.UnitPrice}");
-                Console.WriteLine($"Количество произведенных единиц изделия: {multipliedProduct.Quantity}");
+                Console.WriteLine("|--------------------------------------------------|");
+                Console.WriteLine($"| Результат умножения на число для изделия {i + 1, -7} |");
+                Console.WriteLine($"| Имя: {multipliedProduct.Name, -43} |");
+                Console.WriteLine($"| Стоимость единицы изделия: {multipliedProduct.UnitPrice, -21} |");
+                Console.WriteLine($"| Количество произведенных единиц изделия: {multipliedProduct.Quantity,-7} |");
+                Console.WriteLine("|--------------------------------------------------|");
             }
         }
 
         static void ShowProductData(Product[] products)
         {
-            Console.WriteLine("Данные об изделиях:");
-            Console.WriteLine("------------------------");
+           
 
             for (int i = 0; i < products.Length; i++)
             {
-                Console.WriteLine($"Изделие {i + 1}:");
-                Console.WriteLine($"Название: {products[i].Name}");
-                Console.WriteLine($"Цена за единицу: {products[i].UnitPrice}");
-                Console.WriteLine($"Количество: {products[i].Quantity}");
-                Console.WriteLine("------------------------");
+                if (products[i] == null)
+                {
+                    ProductExceptions.NullObject();
+                }
+                Console.WriteLine("|----------------------|");
+                Console.WriteLine($"| Изделие {i + 1, -12} |");
+                Console.WriteLine($"| Название: {products[i].Name, -10} |");
+                Console.WriteLine($"| Цена за единицу: {products[i].UnitPrice, -3} |");
+                Console.WriteLine($"| Количество: {products[i].Quantity,-8} |");
+                Console.WriteLine("|----------------------|");
             }
         }
     }
