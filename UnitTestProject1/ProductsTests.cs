@@ -58,24 +58,8 @@ namespace UnitTestProject1
             var p = new Product("Product A", 10.0f, 3);
             int multiplier = 0;
 
-            // Act
-            var result = p * multiplier;
-
-            // Assert
-            Assert.AreEqual("Product A", result.Name);
-            Assert.AreEqual(0.0f, result.UnitPrice);
-            Assert.AreEqual(0, result.Quantity);
-        }
-        
-        [TestMethod]
-        public void MultiplyOperator_NegativeMultiplier_ThrowsException()
-        {
-            // Arrange
-            var p = new Product("Product A", 10.0f, 3);
-            int multiplier = -2;
-
-            // Act & Assert
-            Assert.ThrowsException<InvalidOperationException>(() => p * multiplier);
+            // Act Assert
+            Assert.ThrowsException<ArgumentException>(() => p * multiplier);
         }
 
         [TestMethod]
@@ -138,14 +122,10 @@ namespace UnitTestProject1
             var p = new Product("Product 1", 0, 0);
             int multiplier = -2;
 
-            // Act
-            var result = p * multiplier;
-
-            // Assert
-            Assert.AreEqual("Product 1", result.Name);
-            Assert.AreEqual(0, result.Quantity);
-            Assert.AreEqual(0, result.UnitPrice);
+            // Act Assert
+            Assert.ThrowsException<ArgumentException>(() => p * multiplier);
         }
+
         [TestMethod]
         public void Multiplication_WithPositiveMultiplierAndZeroQuantity_ReturnsNewProductWithZeroUnitPrice()
         {
@@ -159,7 +139,7 @@ namespace UnitTestProject1
             // Assert
             Assert.AreEqual("Product 1", result.Name);
             Assert.AreEqual(0, result.Quantity);
-            Assert.AreEqual(0, result.UnitPrice);
+            Assert.AreEqual(15, result.UnitPrice);
         }
     }
 }

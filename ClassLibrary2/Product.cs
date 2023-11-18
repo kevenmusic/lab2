@@ -41,55 +41,34 @@ namespace ClassLibrary3
         /// <exception cref="ArgumentException">Выбрасывается, если имена продуктов различаются.</exception>
         public static Product operator +(Product p1, Product p2)
         {
-         
             if (p1 == null || p2 == null) 
-            { 
-               ProductExceptions.NullObject();
+            {
+                throw new ProductException("Вы не указали информацию об изделиях");
             }
 
             // Проверяем, имеют ли товары одинаковое название
             if (p1.Name != p2.Name)
             {
-                ProductExceptions.ThrowProductNameMismatchException();
+                throw new ProductException("Невозможно добавить товары с разными названиями.");
             }
 
             // Проверяем, если количество отрицательное, выбрасываем исключение
             if (p1.Quantity < 0 || p2.Quantity < 0)
             {
-                ProductExceptions.ThrowNegativeQuantityException();
+                throw new ProductException("Количество не может быть отрицательным.");
             }
 
-
+            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
+            if (p1.UnitPrice < 0 || p2.UnitPrice < 0)
+            {
+                throw new ProductException("Cтоимость не может быть отрицательной.");
+            }
             // Вычисляем общую стоимость для двух продуктов
             double totalPrice = (p1.UnitPrice * p1.Quantity) + (p2.UnitPrice * p2.Quantity);
 
-            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
-            if (totalPrice < 0)
-            {
-                ProductExceptions.ThrowNegativeTotalPriceException();
-            }
-
             // Вычисляем общее количество
             int totalQuantity = p1.Quantity + p2.Quantity;
-
-            double unitPrice;
-
-            // Если общее количество равно нулю, устанавливаем цену за единицу в ноль
-            if (totalQuantity == 0)
-            {
-                unitPrice = 0;
-            }
-            else
-            {
-                // Вычисляем цену за единицу
-                unitPrice = totalPrice / totalQuantity;
-            }
-
-            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
-            if (totalPrice < 0)
-            {
-                ProductExceptions.ThrowNegativeTotalPriceException();
-            }
+            double unitPrice = totalPrice / totalQuantity;    
 
             // Создаем новый объект Product с обновленными значениями
             return new Product(p1.Name, unitPrice, totalQuantity);
@@ -108,45 +87,35 @@ namespace ClassLibrary3
 
             if (p == null)
             {
-                ProductExceptions.NullObject();
+                throw new ProductException("Вы не указали информацию об изделиях");
             }
 
             if (multiplier <= 0)
             {
-                ProductExceptions.ThrowNegativeMultiplierException();
+                throw new ProductException("Множитель не может быть отрицательным или равен 0.");
             }
 
-            else if (multiplier > 0)
+            // Проверяем, если количество отрицательное, выбрасываем исключение
+            if (p.Quantity < 0)
+            {
+                throw new ProductException("Количество не может быть отрицательным.");
+            }
+
+            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
+            if (p.UnitPrice < 0)
+            {
+                throw new ProductException("Cтоимость не может быть отрицательной.");
+            }
+
+            if (multiplier > 0)
             {
                 double totalPrice = p.UnitPrice * p.Quantity * multiplier;
                 totalQuantity = p.Quantity * multiplier;
 
-                // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
-                if (totalPrice < 0)
-                {
-                    ProductExceptions.ThrowNegativeTotalPriceException();
-                }
-                // Проверяем, если общее количество отрицательное, выбрасываем исключение
-                if (totalQuantity < 0)
-                {
-                    ProductExceptions.ThrowNegativeTotalQuantityException();
-                }
-
                 // Вычисляем цену за единицу
                 unitPrice = totalPrice / totalQuantity;
             }
-            else
-            {
-                unitPrice = p.UnitPrice;
-                totalQuantity = p.Quantity * multiplier;
-
-                // Проверяем, если количество единиц отрицательное, выбрасываем исключение
-                if (totalQuantity < 0)
-                {
-                    ProductExceptions.ThrowNegativeTotalQuantityException();
-                }
-            }
-
+      
             unitPrice = p.UnitPrice;
             totalQuantity = p.Quantity * multiplier;
 

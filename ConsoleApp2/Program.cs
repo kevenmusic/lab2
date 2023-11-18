@@ -68,15 +68,7 @@ namespace ConsoleApp3
                             Console.WriteLine("|--------------------------------------------------|");
 
                         }
-                        catch (ArgumentException ex)
-                        {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                        }
-                        catch (InvalidOperationException ex)
-                        {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                        }
-                        catch(NullReferenceException ex)
+                        catch (ProductException ex)
                         {
                             Console.WriteLine($"Ошибка: {ex.Message}");
                         }
@@ -91,21 +83,13 @@ namespace ConsoleApp3
                         {
                             Console.Write("Введите множитель: ");
                             int multiplier = Convert.ToInt32(Console.ReadLine());
-                     
+                            
                             MultiplyProducts(products, multiplier);
                             Console.WriteLine();
                             ShowProductData(products);
 
                         }
-                        catch (ArgumentException ex)
-                        {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                        }
-                        catch (InvalidOperationException ex)
-                        {   
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                        }
-                        catch (NullReferenceException ex)
+                        catch (ProductException ex)
                         {
                             Console.WriteLine($"Ошибка: {ex.Message}");
                         }
@@ -120,7 +104,7 @@ namespace ConsoleApp3
                         {
                             ShowProductData(products);
                         }
-                        catch (NullReferenceException ex)
+                        catch (ProductException ex)
                         {
                             Console.WriteLine($"Ошибка: {ex.Message}");
                         }
@@ -172,7 +156,7 @@ namespace ConsoleApp3
         {
             if (products.Length < 2)
             {
-                ProductExceptions.ThrowInvalidOperationForMoreThanTwoProductsException();
+                throw new ProductException("Можно складывать только два продукта.");
             }
 
             Product sumProduct = products[0];
@@ -189,7 +173,7 @@ namespace ConsoleApp3
         {
             if (products.Length == 0)
             {
-                ProductExceptions.ThrowNoProductsForMultiplication();
+                throw new ProductException("Нет изделий для умножения.");
             }
 
             for (int i = 0; i < products.Length; i++)
@@ -197,7 +181,7 @@ namespace ConsoleApp3
                 Product multipliedProduct = products[i] * multiplier;
                 Console.WriteLine("|--------------------------------------------------|");
                 Console.WriteLine($"| Результат умножения на число для изделия {i + 1, -7} |");
-                Console.WriteLine($"| Имя: {multipliedProduct.Name, -43} |");
+                Console.WriteLine($"| Название: {multipliedProduct.Name, -43} |");
                 Console.WriteLine($"| Стоимость единицы изделия: {multipliedProduct.UnitPrice, -21} |");
                 Console.WriteLine($"| Количество произведенных единиц изделия: {multipliedProduct.Quantity,-7} |");
                 Console.WriteLine("|--------------------------------------------------|");
@@ -206,13 +190,11 @@ namespace ConsoleApp3
 
         static void ShowProductData(Product[] products)
         {
-           
-
             for (int i = 0; i < products.Length; i++)
             {
                 if (products[i] == null)
                 {
-                    ProductExceptions.NullObject();
+                    throw new ProductException("Вы не указали информацию об изделиях");
                 }
                 Console.WriteLine("|----------------------|");
                 Console.WriteLine($"| Изделие {i + 1, -12} |");
