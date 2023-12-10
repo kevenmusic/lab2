@@ -43,25 +43,25 @@ namespace ClassLibrary3
         {
             if (p1 == null || p2 == null) 
             {
-                throw new ProductException("Вы не указали информацию об изделиях");
+                throw new ProductException("Вы не указали информацию об изделиях.", p1, p2);
             }
 
             // Проверяем, имеют ли товары одинаковое название
             if (p1.Name != p2.Name)
             {
-                throw new ProductException("Невозможно добавить товары с разными названиями.");
+                throw new ProductException("Невозможно добавить товары с разными названиями.", p1.Name, p2.Name);
             }
 
             // Проверяем, если количество отрицательное, выбрасываем исключение
             if (p1.Quantity < 0 || p2.Quantity < 0)
             {
-                throw new ProductException("Количество не может быть отрицательным.");
+                throw new ProductException("Количество не может быть отрицательным.", p1.Quantity, p2.Quantity);
             }
 
-            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
+            // Проверяем, если стоимость отрицательная, выбрасываем исключение
             if (p1.UnitPrice < 0 || p2.UnitPrice < 0)
             {
-                throw new ProductException("Cтоимость не может быть отрицательной.");
+                throw new ProductException("Cтоимость не может быть отрицательной.", p1.UnitPrice, p2.UnitPrice);
             }
             // Вычисляем общую стоимость для двух продуктов
             double totalPrice = (p1.UnitPrice * p1.Quantity) + (p2.UnitPrice * p2.Quantity);
@@ -87,38 +87,32 @@ namespace ClassLibrary3
 
             if (p == null)
             {
-                throw new ProductException("Вы не указали информацию об изделиях");
+                throw new ProductException("Вы не указали информацию об изделиях.", p);
             }
 
             if (multiplier <= 0)
             {
-                throw new ProductException("Множитель не может быть отрицательным или равен 0.");
+                throw new ProductException("Множитель не может быть отрицательным или равен 0.", multiplier);
             }
 
             // Проверяем, если количество отрицательное, выбрасываем исключение
             if (p.Quantity < 0)
             {
-                throw new ProductException("Количество не может быть отрицательным.");
+                throw new ProductException("Количество не может быть отрицательным.", p.Quantity);
             }
 
-            // Проверяем, если общая стоимость отрицательная, выбрасываем исключение
+            // Проверяем, если стоимость отрицательная, выбрасываем исключение
             if (p.UnitPrice < 0)
             {
-                throw new ProductException("Cтоимость не может быть отрицательной.");
+                throw new ProductException("Cтоимость не может быть отрицательной.", p.UnitPrice);
             }
-
-            if (multiplier > 0)
-            {
-                double totalPrice = p.UnitPrice * p.Quantity * multiplier;
-                totalQuantity = p.Quantity * multiplier;
-
-                // Вычисляем цену за единицу
-                unitPrice = totalPrice / totalQuantity;
-            }
-      
-            unitPrice = p.UnitPrice;
+            
+            double totalPrice = p.UnitPrice * p.Quantity * multiplier;
             totalQuantity = p.Quantity * multiplier;
 
+            // Вычисляем цену за единицу
+            unitPrice = totalPrice / totalQuantity;
+            
             return new Product(p.Name, unitPrice, totalQuantity);
         }
     }

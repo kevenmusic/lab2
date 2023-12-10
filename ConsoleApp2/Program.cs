@@ -70,7 +70,7 @@ namespace ConsoleApp3
                         }
                         catch (ProductException ex)
                         {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
+                            Console.WriteLine($"Ошибка: {ex.Message}. Дополнительная информация: {ex.Value}.");
                         }
 
                         Console.WriteLine("Нажмите Enter для продолжения...");
@@ -91,7 +91,7 @@ namespace ConsoleApp3
                         }
                         catch (ProductException ex)
                         {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
+                            Console.WriteLine($"Ошибка: {ex.Message}. Дополнительная информация: {ex.Value}.");
                         }
 
                         Console.WriteLine("Нажмите Enter для продолжения...");
@@ -137,8 +137,7 @@ namespace ConsoleApp3
                         break;
 
                     case 5:
-                        exit = true;
-                        break;
+                        return;
 
                     default:
                         Console.WriteLine("Неверный номер операции.");
@@ -181,7 +180,7 @@ namespace ConsoleApp3
                 Product multipliedProduct = products[i] * multiplier;
                 Console.WriteLine("|--------------------------------------------------|");
                 Console.WriteLine($"| Результат умножения на число для изделия {i + 1, -7} |");
-                Console.WriteLine($"| Название: {multipliedProduct.Name, -43} |");
+                Console.WriteLine($"| Название: {multipliedProduct.Name, -38} |");
                 Console.WriteLine($"| Стоимость единицы изделия: {multipliedProduct.UnitPrice, -21} |");
                 Console.WriteLine($"| Количество произведенных единиц изделия: {multipliedProduct.Quantity,-7} |");
                 Console.WriteLine("|--------------------------------------------------|");
